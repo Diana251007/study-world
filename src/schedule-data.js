@@ -1,0 +1,17 @@
+export const defaultSchedule = [
+  { time: "08:00 - 08:50", l: { title: "Aritmética", teacher: "Misaico Salvatierra" }, m: { title: "Álgebra", teacher: "Quispe Rosas" }, x: { title: "Trigonometría", teacher: "Zavaleta Pérez" }, j: { title: "Raz. Matemático", teacher: "Coronel Marthens" }, v: { title: "Geografía", teacher: "Santiago Contreras" }, type: "morning" },
+  { time: "08:50 - 09:40", l: { title: "Aritmética", teacher: "Misaico Salvatierra" }, m: { title: "Álgebra", teacher: "Quispe Rosas" }, x: { title: "Trigonometría", teacher: "Zavaleta Pérez" }, j: { title: "Raz. Matemático", teacher: "Coronel Marthens" }, v: { title: "Geografía", teacher: "Santiago Contreras" }, type: "morning" },
+  { time: "09:40 - 10:30", l: { title: "Lenguaje", teacher: "Condori Zamora" }, m: { title: "Álgebra", teacher: "Quispe Rosas" }, x: { title: "Geometría", teacher: "Salvatierra Zárate" }, j: { title: "Raz. Matemático", teacher: "Coronel Marthens" }, v: { title: "Valores", teacher: "Cervantes Ocaña" }, type: "morning" },
+  { time: "10:30 - 11:20", l: { title: "Aritmética", teacher: "Misaico Salvatierra" }, m: { title: "Historia", teacher: "Ulloa Jara" }, x: { title: "Geometría", teacher: "Salvatierra Zárate" }, j: { title: "Trigonometría", teacher: "Zavaleta Pérez" }, v: { title: "Valores", teacher: "Cervantes Ocaña" }, type: "morning" },
+  { time: "11:20 - 11:50", rest: "☕ DESCANSO MAÑANA" },
+  { time: "11:50 - 12:40", l: { title: "Lenguaje", teacher: "Condori Zamora" }, m: { title: "Historia", teacher: "Ulloa Jara" }, x: { title: "Geometría", teacher: "Salvatierra Zárate" }, j: { title: "Física", teacher: "Pardes Yang" }, v: { title: "Química", teacher: "Calixto Trujillo" }, type: "morning" },
+  { time: "12:40 - 13:30", l: { title: "Biología", teacher: "Del Castillo Espinoza" }, m: { title: "Comunicación", teacher: "Asencios" }, x: { title: "Economía", teacher: "Garibay Fabián" }, j: { title: "Física", teacher: "Pardes Yang" }, v: { title: "Química", teacher: "Calixto Trujillo" }, type: "morning" },
+  { time: "16:00 - 17:15", rest: "☕ DESCANSO TARDE / PREPARACIÓN UNAC" },
+  { time: "17:15 - 18:45", m: { title: "Literatura", teacher: "Intensivo UNAC" }, x: { title: "Aritmética", teacher: "Intensivo UNAC" }, j: { title: "Álgebra", teacher: "Intensivo UNAC" }, type: "unac" },
+  { time: "17:30 - 19:30", l: { title: "Geometría", teacher: "Intensivo UNAC (18:00)" }, v: { title: "Historia", teacher: "Intensivo UNAC" }, s: { title: "Repaso Mate", teacher: "Intensivo UNAC" }, type: "unac" },
+  { time: "19:00 - 20:30", m: { title: "R.M. 2", teacher: "Intensivo UNAC" }, x: { title: "Lenguaje", teacher: "Intensivo UNAC" }, v: { title: "Com. Valores 2", teacher: "Intensivo UNAC" }, type: "unac" },
+  { time: "19:30 - 21:15", l: { title: "Economía", teacher: "Intensivo UNAC (19:45)" }, j: { title: "Química", teacher: "Intensivo UNAC" }, type: "unac" },
+  { time: "20:30 - 22:15", m: { title: "Biología", teacher: "Intensivo UNAC" }, x: { title: "Física", teacher: "Intensivo UNAC" }, j: { title: "Geografía", teacher: "Intensivo UNAC" }, v: { title: "Trigonometría", teacher: "Intensivo UNAC" }, type: "unac" },
+  { time: "21:30 - 23:45", l: { title: "R.M. 1", teacher: "Intensivo UNAC" }, m: { title: "Estadística", teacher: "Intensivo UNAC" }, x: { title: "R.V.", teacher: "Intensivo UNAC" }, j: { title: "Com. Valores 1", teacher: "Intensivo UNAC" }, type: "unac" },
+  { time: "10:00 - 13:00", d: { title: "📝 SIMULACRO UNAC", teacher: "Examen de Prueba" }, type: "unac" }
+];

@@ -1,0 +1,14 @@
+{
+  "appId": "pe.studyworld.unac",
+  "appName": "Study World",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "LocalNotifications": {
+      "smallIcon": "ic_stat_icon",
+      "iconColor": "#EC4899"
+    }
+  }
+}

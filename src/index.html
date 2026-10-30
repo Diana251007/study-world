@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Study World UNAC 2026</title>
+
+  <meta name="theme-color" content="#f472b6">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Study World">
+
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="app.css">
+  <script src="app.js" defer></script>
+</head>
+<body class="min-h-screen pb-16 theme-kitty">
+
+  <!-- Aviso emergente -->
+  <div id="toast" class="fixed top-3 inset-x-3 z-[60] hidden pointer-events-none">
+    <div class="max-w-md mx-auto bg-white border-2 border-pink-400 rounded-2xl shadow-2xl p-4 text-pink-900 font-sans pointer-events-auto">
+      <div id="toast-title" class="font-black text-sm"></div>
+      <div id="toast-body" class="text-xs mt-0.5"></div>
+    </div>
+  </div>
+
+  <header class="kitty-header shadow-lg sticky top-0 z-30 px-4 pb-3 border-b-4 border-pink-300">
+    <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-3">
+      <div class="flex items-center gap-3">
+        <button data-act="tab" data-target="view-profile" id="hdr-avatar" aria-label="Mi perfil"
+                class="w-12 h-12 rounded-full overflow-hidden border-2 border-white/80 bg-white/30 shrink-0" data-avatar data-size="100%"></button>
+        <div>
+          <h1 class="text-lg sm:text-xl font-black tracking-wide flex items-center gap-1.5">
+            Study World <span class="text-xs bg-white/20 px-2.5 py-0.5 rounded-full font-normal">UNAC 2026</span>
+          </h1>
+          <button data-act="tab" data-target="view-profile" id="sync-chip" class="text-[11px] opacity-95 font-sans bg-white/20 rounded-full px-2.5 py-0.5 mt-0.5">…</button>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
+        <div class="bg-black/20 backdrop-blur-md px-3 py-1.5 rounded-2xl text-right font-mono border border-white/20">
+          <div id="live-time" class="text-base font-black">00:00:00</div>
+          <div id="live-date" class="text-[10px] font-sans opacity-90 capitalize">Cargando...</div>
+        </div>
+        <button id="install-btn" data-act="installOpen" class="bg-white/90 hover:bg-white text-pink-600 text-xs font-bold px-3.5 py-2 rounded-2xl transition shadow-md flex items-center gap-1.5">
+          <i data-lucide="smartphone" class="w-4 h-4"></i><span>Instalar</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="max-w-7xl mx-auto px-4 mt-4">
+    <div class="flex border-b-2 border-pink-200 overflow-x-auto gap-2 text-xs sm:text-sm font-bold no-scrollbar">
+      <button class="nav-tab px-4 py-2.5 rounded-t-2xl bg-pink-500 text-white flex items-center gap-2 transition whitespace-nowrap" data-act="tab" data-target="view-dashboard">
+        <i data-lucide="clock" class="w-4 h-4"></i> En vivo
+      </button>
+      <button class="nav-tab px-4 py-2.5 rounded-t-2xl text-pink-600 hover:bg-pink-100 flex items-center gap-2 transition whitespace-nowrap" data-act="tab" data-target="view-schedule">
+        <i data-lucide="calendar-range" class="w-4 h-4"></i> Horario & Apuntes
+      </button>
+      <button class="nav-tab px-4 py-2.5 rounded-t-2xl text-pink-600 hover:bg-pink-100 flex items-center gap-2 transition whitespace-nowrap" data-act="tab" data-target="view-ai-tutor">
+        <i data-lucide="sparkles" class="w-4 h-4"></i> Tutor
+      </button>
+      <button class="nav-tab px-4 py-2.5 rounded-t-2xl text-pink-600 hover:bg-pink-100 flex items-center gap-2 transition whitespace-nowrap" data-act="tab" data-target="view-profile">
+        <i data-lucide="user" class="w-4 h-4"></i> Mi perfil
+      </button>
+      <button class="nav-tab px-4 py-2.5 rounded-t-2xl text-pink-600 hover:bg-pink-100 flex items-center gap-2 transition whitespace-nowrap" data-act="tab" data-target="view-settings">
+        <i data-lucide="bell" class="w-4 h-4"></i> Avisos & Temas
+      </button>
+    </div>
+  </nav>
+
+  <main class="max-w-7xl mx-auto px-4 mt-5">
+
+    <!-- EN VIVO -->
+    <section id="view-dashboard" class="view-panel space-y-4">
+      <div id="notif-banner" class="hidden bg-amber-100 border-2 border-amber-300 text-amber-900 rounded-2xl p-3 text-xs font-sans flex flex-wrap items-center justify-between gap-2">
+        <span>🔔 Activa los avisos para que suene antes de cada clase, incluso con la pantalla bloqueada.</span>
+        <button data-act="notifAllow" class="bg-amber-500 text-white font-bold px-3 py-1.5 rounded-xl">Activar avisos</button>
+      </div>
+
+      <div class="kitty-card rounded-3xl p-6 relative overflow-hidden">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+          <div class="flex flex-col items-center justify-center p-4 bg-pink-50/50 rounded-2xl border border-pink-200 text-center">
+            <button data-act="tab" data-target="view-profile" class="w-36 h-36 rounded-full overflow-hidden border-4 border-pink-200 bg-white animate-kitty-float my-2" data-avatar data-size="100%" aria-label="Mi avatar"></button>
+            <div id="dash-name" class="text-sm font-black text-pink-800">Mi gatita</div>
+            <span id="hk-status-badge" class="text-xs font-black uppercase px-3 py-1 rounded-full bg-pink-500 text-white mt-1">Lista</span>
+          </div>
+
+          <div class="md:col-span-2 space-y-4">
+            <div class="flex justify-between items-center pb-2 border-b border-pink-200">
+              <span class="text-xs font-bold uppercase tracking-wider text-pink-600 flex items-center gap-2">
+                <span class="relative flex h-3 w-3">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-3 w-3 bg-pink-500"></span>
+                </span>
+                <span id="dash-label">Próxima clase</span>
+              </span>
+              <span id="dash-day-badge" class="text-xs font-bold bg-pink-100 text-pink-700 px-3 py-1 rounded-full">Hoy</span>
+            </div>
+            <div>
+              <h2 id="dash-active-title" class="text-2xl font-black leading-tight text-pink-900">Cargando horario...</h2>
+              <p id="dash-active-detail" class="text-xs font-sans opacity-80 mt-1">--</p>
+              <div id="dash-active-time" class="text-sm font-bold font-mono text-pink-600 mt-2">00:00 - 00:00</div>
+            </div>
+            <div class="bg-pink-100/60 p-3 rounded-2xl flex justify-between items-center font-sans text-xs text-pink-900">
+              <span>Estado:</span>
+              <span id="dash-countdown" class="text-base font-black font-mono text-emerald-600">--</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-6 pt-4 border-t border-pink-200 bg-pink-50/80 p-4 rounded-2xl text-center">
+          <div class="flex justify-between items-center mb-1 px-2">
+            <span class="text-[11px] font-bold uppercase text-pink-500 tracking-widest">✨ Frase motivadora ✨</span>
+          </div>
+          <blockquote id="quote-text" class="text-xs italic font-sans text-pink-900 font-medium"></blockquote>
+          <span id="quote-author" class="text-[10px] font-bold text-pink-600 block mt-1"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- HORARIO -->
+    <section id="view-schedule" class="view-panel hidden">
+      <div class="kitty-card rounded-3xl overflow-hidden p-4">
+        <div class="flex flex-wrap justify-between items-center gap-3 mb-4 pb-2 border-b border-pink-200">
+          <div>
+            <h2 class="text-base font-bold">🌸 Horario consolidado (toca una clase para ver/guardar apuntes)</h2>
+            <p class="text-xs font-sans opacity-80">Mañana (08:00-14:20) + Intensivo UNAC (17:15-23:45)</p>
+          </div>
+          <div class="flex gap-2">
+            <button data-act="filter" data-v="all" class="px-3 py-1 bg-pink-500 text-white rounded-xl text-xs font-bold">Todos</button>
+            <button data-act="filter" data-v="morning" class="px-3 py-1 bg-pink-100 text-pink-700 rounded-xl text-xs font-bold">Mañana</button>
+            <button data-act="filter" data-v="unac" class="px-3 py-1 bg-amber-100 text-amber-800 rounded-xl text-xs font-bold">UNAC</button>
+          </div>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse min-w-[900px] text-xs">
+            <thead>
+              <tr class="bg-pink-500 text-white font-bold uppercase">
+                <th class="p-3 text-center w-28 border-r border-pink-400">Hora</th>
+                <th class="p-3 border-r border-pink-400">Lunes</th>
+                <th class="p-3 border-r border-pink-400">Martes</th>
+                <th class="p-3 border-r border-pink-400">Miércoles</th>
+                <th class="p-3 border-r border-pink-400">Jueves</th>
+                <th class="p-3 border-r border-pink-400">Viernes</th>
+                <th class="p-3 border-r border-pink-400 bg-pink-600">Sábado</th>
+                <th class="p-3 bg-pink-700">Domingo</th>
+              </tr>
+            </thead>
+            <tbody id="schedule-tbody" class="divide-y divide-pink-100 font-sans"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TUTOR -->
+    <section id="view-ai-tutor" class="view-panel hidden space-y-4">
+      <div class="kitty-card rounded-3xl p-6 max-w-3xl mx-auto space-y-4">
+        <div class="flex justify-between items-center pb-4 border-b border-pink-200">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-pink-200 bg-white" data-avatar data-size="100%"></div>
+            <div>
+              <h3 class="text-base font-bold">Tutor de estudio</h3>
+              <p class="text-xs font-sans opacity-80">Respuestas rápidas con voz y dictado</p>
+            </div>
+          </div>
+          <button id="voice-toggle-btn" data-act="toggleVoice" class="bg-pink-100 text-pink-700 border border-pink-300 px-3 py-1.5 rounded-2xl text-xs font-bold flex items-center gap-1.5">
+            <i data-lucide="volume-2" class="w-4 h-4"></i><span id="voice-status-text">Voz: Activada</span>
+          </button>
+        </div>
+        <div id="chat-box" class="h-64 overflow-y-auto space-y-3 p-3 bg-pink-50/50 rounded-2xl border border-pink-100 font-sans text-xs">
+          <div class="bg-white p-3 rounded-2xl max-w-md border border-pink-200 text-pink-900">¡Hola! 🎀 Soy tu tutora. Escríbeme o háblame por el micrófono. 🌸</div>
+        </div>
+        <div class="flex gap-2 items-center">
+          <input type="text" id="ai-input" placeholder="Escribe o presiona el micro..." class="flex-1 min-w-0 bg-white text-pink-900 border border-pink-300 rounded-2xl px-4 py-3 text-xs focus:outline-none focus:ring-2 focus:ring-pink-400 font-sans">
+          <button id="mic-btn" data-act="mic" class="bg-pink-100 hover:bg-pink-200 text-pink-700 p-3 rounded-2xl text-xs font-bold transition flex items-center gap-1">
+            <i data-lucide="mic" class="w-4 h-4"></i><span id="mic-status" class="hidden sm:inline">Hablar</span>
+          </button>
+          <button data-act="send" class="bg-pink-500 hover:bg-pink-600 text-white font-bold px-5 py-3 rounded-2xl text-xs transition flex items-center gap-1.5">
+            <i data-lucide="send" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PERFIL: cuenta + avatar -->
+    <section id="view-profile" class="view-panel hidden">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 max-w-5xl mx-auto">
+        <div class="kitty-card rounded-3xl p-6 space-y-4">
+          <h3 class="text-base font-bold flex items-center gap-2"><i data-lucide="cloud" class="w-5 h-5 text-pink-500"></i> Mi cuenta y sincronización</h3>
+          <div id="acct-body" class="font-sans text-xs space-y-3"></div>
+        </div>
+        <div class="kitty-card rounded-3xl p-6 space-y-4">
+          <div class="flex justify-between items-center">
+            <h3 class="text-base font-bold flex items-center gap-2"><i data-lucide="palette" class="w-5 h-5 text-pink-500"></i> Mi avatar</h3>
+            <button data-act="avRandom" class="bg-pink-100 text-pink-700 border border-pink-300 px-3 py-1.5 rounded-2xl text-xs font-bold flex items-center gap-1.5">
+              <i data-lucide="shuffle" class="w-4 h-4"></i> Sorpréndeme
+            </button>
+          </div>
+          <div id="avatar-editor" class="font-sans text-xs space-y-3"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AVISOS & TEMAS -->
+    <section id="view-settings" class="view-panel hidden">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 max-w-5xl mx-auto">
+        <div class="kitty-card rounded-3xl p-6 space-y-4">
+          <h3 class="text-base font-bold flex items-center gap-2"><i data-lucide="bell" class="w-5 h-5 text-pink-500"></i> Avisos de clase</h3>
+          <div class="font-sans text-xs space-y-3">
+            <label class="flex items-center justify-between gap-3"><span class="font-bold">Avisarme antes de cada clase</span>
+              <input type="checkbox" id="set-enabled" class="w-5 h-5 accent-pink-500"></label>
+            <label class="flex items-center justify-between gap-3"><span class="font-bold">¿Cuántos minutos antes?</span>
+              <select id="set-lead" class="bg-white text-pink-900 border border-pink-300 rounded-xl px-3 py-2">
+                <option value="10">10 min</option><option value="15">15 min</option><option value="20">20 min</option>
+                <option value="30">30 min</option><option value="45">45 min</option><option value="60">1 hora</option>
+              </select></label>
+            <label class="flex items-center justify-between gap-3"><span class="font-bold">Aviso extra cuando empiece</span>
+              <input type="checkbox" id="set-start" class="w-5 h-5 accent-pink-500"></label>
+            <label class="flex items-center justify-between gap-3"><span class="font-bold">Sonido (en navegador)</span>
+              <input type="checkbox" id="set-sound" class="w-5 h-5 accent-pink-500"></label>
+            <div id="notif-status" class="bg-pink-50 border border-pink-200 rounded-2xl p-3 text-pink-900"></div>
+            <div id="exact-box" class="hidden bg-amber-50 border border-amber-300 rounded-2xl p-3 text-amber-900">
+              ⏰ Para que el aviso llegue puntual, permite “Alarmas y recordatorios” para esta app.
+              <button data-act="exactOpen" class="block mt-2 bg-amber-500 text-white font-bold px-3 py-1.5 rounded-xl">Abrir ajuste</button>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <button data-act="notifAllow" class="bg-pink-500 text-white font-bold px-4 py-2 rounded-2xl">Permitir notificaciones</button>
+              <button data-act="notifTest" class="bg-pink-100 text-pink-700 border border-pink-300 font-bold px-4 py-2 rounded-2xl">Probar aviso (10 s)</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-5">
+          <div class="kitty-card rounded-3xl p-6 space-y-4">
+            <h3 class="text-base font-bold flex items-center gap-2"><i data-lucide="palette" class="w-5 h-5 text-pink-500"></i> Temática</h3>
+            <div class="grid grid-cols-2 gap-3 text-xs font-bold">
+              <button data-act="theme" data-v="kitty" class="p-3 rounded-2xl border-2 border-pink-300 bg-pink-100 text-pink-800">🎀 Pink kawaii</button>
+              <button data-act="theme" data-v="dark" class="p-3 rounded-2xl border-2 border-purple-800 bg-purple-950 text-purple-200">🦇 Dark</button>
+            </div>
+          </div>
+          <div class="kitty-card rounded-3xl p-6 space-y-3">
+            <h3 class="text-base font-bold flex items-center gap-2"><i data-lucide="download" class="w-5 h-5 text-pink-500"></i> Respaldo</h3>
+            <p class="text-xs font-sans opacity-80">Guarda una copia de tus apuntes (incluye fotos y audios de este dispositivo) o restáurala.</p>
+            <div class="flex flex-wrap gap-2 text-xs font-bold">
+              <button data-act="backup" class="bg-emerald-500 text-white px-4 py-2 rounded-2xl">Guardar respaldo</button>
+              <label class="bg-pink-100 text-pink-700 border border-pink-300 px-4 py-2 rounded-2xl cursor-pointer">Restaurar
+                <input type="file" accept="application/json" class="hidden" id="restore-input"></label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal instalar (solo navegador) -->
+  <div id="pwa-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/60 font-sans">
+    <div class="bg-white border-2 border-pink-300 rounded-3xl p-6 max-w-md w-full shadow-2xl text-pink-900 text-center relative">
+      <button data-act="installClose" class="absolute top-4 right-4 text-pink-400 hover:text-pink-600"><i data-lucide="x" class="w-6 h-6"></i></button>
+      <div class="text-4xl mb-2">📱</div>
+      <h3 class="text-lg font-bold mb-1 text-pink-800">Instalar la app</h3>
+      <p class="text-xs text-pink-600 mb-4">Funciona en celular, tablet y computadora:</p>
+      <div class="bg-pink-50 p-3.5 rounded-2xl text-xs text-left space-y-3 mb-4 border border-pink-200">
+        <div><strong class="block mb-0.5">🤖 Android (Chrome):</strong>Menú ⋮ → <b>Instalar aplicación</b>.</div>
+        <hr class="border-pink-200">
+        <div><strong class="block mb-0.5">🍎 iPhone / iPad (Safari):</strong>Compartir → <b>Agregar al inicio</b>.</div>
+        <hr class="border-pink-200">
+        <div><strong class="block mb-0.5">💻 PC / Mac (Chrome o Edge):</strong>Ícono de instalar en la barra de direcciones.</div>
+      </div>
+      <p class="text-[11px] text-pink-600 mb-3">Para que el aviso suene con la app cerrada y en la pantalla de bloqueo, usa la versión APK de Android.</p>
+      <button data-act="installNative" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 rounded-2xl text-xs transition shadow-md">✨ Instalar automáticamente</button>
+    </div>
+  </div>
+
+  <!-- Modal apuntes -->
+  <div id="notes-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/60 font-sans">
+    <div class="bg-white border-2 border-pink-300 rounded-3xl p-6 max-w-lg w-full shadow-2xl text-pink-900 relative max-h-[92vh] overflow-y-auto">
+      <button data-act="closeNotes" class="absolute top-4 right-4 text-pink-400 hover:text-pink-600"><i data-lucide="x" class="w-6 h-6"></i></button>
+      <h3 id="modal-course-title" class="text-base font-bold font-kawaii text-pink-800 mb-1">Apuntes de Clase</h3>
+      <p id="modal-course-sub" class="text-xs text-pink-600 mb-4"></p>
+      <div class="space-y-1 mb-4">
+        <label class="text-xs font-bold text-pink-700 block">👤 Profesor / Detalle:</label>
+        <input type="text" id="modal-teacher-input" class="w-full bg-pink-50 text-pink-900 border border-pink-200 rounded-xl p-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-pink-400">
+        <p class="text-[10px] text-pink-500">Tip: si la clase empieza a otra hora, escribe la hora entre paréntesis, por ejemplo “Intensivo UNAC (18:00)”.</p>
+      </div>
+      <div class="space-y-1 mb-4">
+        <label class="text-xs font-bold text-pink-700 block">✍️ Apuntes y tareas (se sincronizan):</label>
+        <textarea id="modal-notes-textarea" rows="4" placeholder="Escribe tus notas..." class="w-full bg-pink-50 text-pink-900 border border-pink-200 rounded-2xl p-3 text-xs focus:outline-none focus:ring-2 focus:ring-pink-400"></textarea>
+      </div>
+      <div class="space-y-2 mb-4">
+        <label class="text-xs font-bold text-pink-700 block">📷 Fotos / audios (solo en este dispositivo, máx. 2 MB):</label>
+        <label class="px-3 py-2 bg-pink-100 hover:bg-pink-200 text-pink-700 text-xs font-bold rounded-xl cursor-pointer inline-flex items-center gap-1.5">
+          <i data-lucide="image" class="w-4 h-4"></i> Adjuntar archivo
+          <input type="file" accept="image/*,video/*,audio/*" class="hidden" id="file-input">
+        </label>
+        <div id="attachments-preview" class="flex flex-wrap gap-2 mt-2"></div>
+      </div>
+      <div class="flex justify-end gap-2 pt-3 border-t border-pink-200">
+        <button data-act="saveNotes" class="bg-pink-500 hover:bg-pink-600 text-white font-bold px-5 py-2.5 rounded-2xl text-xs transition flex items-center gap-1.5">
+          <i data-lucide="save" class="w-4 h-4"></i> Guardar cambios
+        </button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

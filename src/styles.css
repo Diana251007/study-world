@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face { font-family: 'Fredoka'; font-style: normal; font-weight: 300 700; font-display: swap; src: url('fonts/fredoka.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 100 900; font-display: swap; src: url('fonts/inter.woff2') format('woff2'); }
+
+body { font-family: 'Fredoka', cursive, sans-serif; transition: background-color .3s, color .3s; -webkit-tap-highlight-color: transparent; }
+body.theme-kitty { background-color: #fff0f5; color: #831843; }
+body.theme-kitty .kitty-card { background-color: #ffffff; border: 2px solid #fecdd3; box-shadow: 0 10px 25px -5px rgba(236,72,153,.15); }
+body.theme-kitty .kitty-header { background: linear-gradient(135deg, #f472b6 0%, #ec4899 100%); color: #fff; }
+
+body.theme-dark { background-color: #0d0714; color: #f5d0fe; }
+body.theme-dark .kitty-card { background-color: #180e25; border: 2px solid #4a1d6d; }
+body.theme-dark .kitty-header { background: linear-gradient(135deg, #2e1065 0%, #581c87 50%, #831843 100%); color: #f5d0fe; }
+body.theme-dark .kitty-card .text-pink-900,
+body.theme-dark .kitty-card .text-pink-800,
+body.theme-dark .kitty-card .text-pink-700 { color: #f5d0fe; }
+body.theme-dark .kitty-card .bg-pink-50\/50,
+body.theme-dark .kitty-card .bg-pink-50\/80,
+body.theme-dark .kitty-card .bg-pink-50 { background-color: #241335; }
+body.theme-dark .kitty-card .bg-pink-100\/60 { background-color: #2e1a45; }
+body.theme-dark .kitty-card .border-pink-200,
+body.theme-dark .kitty-card .border-pink-100 { border-color: #4a1d6d; }
+body.theme-dark #notif-status { background-color: #241335; }
+
+.kitty-header { padding-top: calc(.75rem + env(safe-area-inset-top)); }
+.card-morning { background-color: #fff0f5; border: 1.5px solid #fbcfe8; color: #831843; border-radius: 1rem; padding: .5rem; text-align: center; cursor: pointer; }
+.card-unac { background-color: #fef9c3; border: 1.5px solid #fef08a; color: #713f12; border-radius: 1rem; padding: .5rem; text-align: center; cursor: pointer; }
+.today-col { background: rgba(244,114,182,.12); }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+@keyframes floatKitty { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+.animate-kitty-float { animation: floatKitty 3s ease-in-out infinite; }
+[data-avatar] svg { display: block; width: 100%; height: 100%; }
